@@ -17,7 +17,7 @@ class Chatbird:
         self._device = device
 
     def __enter__(self):
-        self._fd = open(self._device, 'wb')
+        self._fd = open(self._device, 'wb', buffering=0)
         return ChatbirdInterface(self._fd)
 
     def __exit__(self, *args):
@@ -30,11 +30,9 @@ class ChatbirdInterface:
 
     def _send_command(self, command):
         ioctl(self._fd, 0, command, False)
-        self._fd.flush()
 
     def _send_data(self, data):
         self._fd.write(data)
-        self._fd.flush()
 
     def flap(self):
         self._send_command(CHATBIRD_FLAP)
