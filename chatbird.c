@@ -227,40 +227,45 @@ static long chatbird_unlocked_ioctl(struct file *file, unsigned int cmd, unsigne
 		goto unlock_exit;
 	}
 
-	if (cmd != 0) {
-		retval = -1;
-		goto unlock_exit;
-	}
-
 	index = 5000;			// 0b1001110001000
-	// 0xaf05 ?
-	// 0xbc00
-	switch(arg) {
-		case '0':			// ??
-			value = 0xbc00;	// 0b1011110000000000
+
+	switch(cmd) {
+		case 0:
+			switch(arg) {
+				case '0':			// ??
+					value = 0xbc00;	// 0b1011110000000000
+					break;
+				case '1': 			// all off
+					value = 0xbc01; // 0b1011110000000001
+					break;
+				case '2':   		// both leds on
+					value = 0xbcc1; // 0b1011110011000001
+					break;
+				case '3':			// flap wings
+					value = 0xbc05;	// 0b1011110000000101
+					break;
+				case '4':			// move beak
+					value = 0xbc03;	// 0b1011110000000011
+					break;
+				case '5': 			// tilt head
+					value = 0xbc04; // 0b1011110000000100
+					break;
+				case '6':			// flap once
+					index = 55;		// 0b110111
+					value = 0xaf05;	// 0b1010111100000101
+					break;
+				default:
+					value = 0xbc00;
+					break;
+			}
 			break;
-		case '1': 			// all off
-			value = 0xbc01; // 0b1011110000000001
-			break;
-		case '2':   		// both leds on
-			value = 0xbcc1; // 0b1011110011000001
-			break;
-		case '3':			// flap wings
-			value = 0xbc05;	// 0b1011110000000101
-			break;
-		case '4':			// move beak
-			value = 0xbc03;	// 0b1011110000000011
-			break;
-		case '5': 			// tilt head
-			value = 0xbc04; // 0b1011110000000100
-			break;
-		case '6':			// flap once
-			index = 55;		// 0b110111
-			value = 0xaf05;	// 0b1010111100000101
+		case 1:
+			index = (arg >> 16) & 0xffff;
+			value = arg & 0xffff;
 			break;
 		default:
-			value = 0xbc00;
-			break;
+			retval = -EINVAL;
+			goto unlock_exit;
 	}
 
 	retval = usb_control_msg(dev->udev,
