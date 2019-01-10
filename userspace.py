@@ -27,7 +27,7 @@ class _GetchUnix:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-f = open("/dev/cb6", "wb")
+f = open("/dev/cb1", "wb")
 
 try:
     inkey = _Getch()
