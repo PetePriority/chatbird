@@ -737,7 +737,7 @@ static void chatbird_disconnect(struct usb_interface *interface)
 }
 
 static struct usb_driver chatbird_driver =
-    {
+{
 	.name = "chatbird_driver",
 	.id_table = chatbird_table,
 	.probe = chatbird_probe,
