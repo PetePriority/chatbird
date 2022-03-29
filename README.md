@@ -1,5 +1,5 @@
 # Chatbird-Bot USB Kernel Driver
-The Chatbird-Bot driver is a Linux kernel driver for the Mitsubishi Chatbird.
+The Chatbird-Bot driver is a Linux kernel driver for the Mitsumi Chatbird.
 
 ![Chatbird](/res/chatbird.jpg)
 
